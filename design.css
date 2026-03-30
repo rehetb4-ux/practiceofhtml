@@ -1,13 +1,13 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #f0f4f8;
+  background-color: #ffffff;
   color: #333333;
   margin: 0;
   padding: 40px;
 }
 
 h1 {
-  color: #2d6a4f;
+  color: #1a1a2e;
   font-size: 42px;
 }
 
@@ -32,7 +32,7 @@ button {
   border: none;
   padding: 12px 24px;
   font-size: 16px;
-  border-radius: 8px;
+  border-radius: 25px;
   margin-right: 10px;
   cursor: pointer;
 }
