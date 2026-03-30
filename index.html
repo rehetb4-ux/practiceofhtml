@@ -1,43 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>My Website</title>
-    <style>
-        /* CSS stays in the head, wrapped in style tags */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #ffffff;
-            color: #333333;
-            margin: 0;
-            padding: 40px;
-        }
-        h1 { color: #1a1a2e; font-size: 42px; }
-        h2 { color: #555555; font-size: 24px; }
-        h3 { color: #888888; font-size: 18px; }
-        p { font-size: 16px; line-height: 1.8; }
-        button {
-            background-color: #2d6a4f;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            font-size: 16px;
-            border-radius: 25px;
-            margin-right: 10px;
-            cursor: pointer;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Rehet's Website</title>
+  <style>
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f4f8;
+    }
+
+    /* HEADER SECTION */
+    .header {
+      background-color: #1a1a2e;
+      padding: 50px 40px;
+    }
+
+    .avatar {
+      width: 70px;
+      height: 70px;
+      background-color: #2d6a4f;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    .avatar-letter {
+      color: white;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .header h1 {
+      color: white;
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+
+    .header p {
+      color: #9FE1CB;
+      font-size: 16px;
+    }
+
+    /* CARD SECTION */
+    .card {
+      background-color: white;
+      margin: 30px 40px;
+      border-radius: 16px;
+      padding: 30px;
+    }
+
+    .skills {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .skill-badge {
+      background-color: #f0f4f8;
+      border-radius: 8px;
+      padding: 12px 20px;
+      text-align: center;
+    }
+
+    .skill-badge h3 {
+      color: #1a1a2e;
+      font-size: 18px;
+      margin-bottom: 4px;
+    }
+
+    .skill-badge p {
+      color: #888888;
+      font-size: 12px;
+    }
+
+    .about {
+      color: #555555;
+      font-size: 15px;
+      line-height: 1.8;
+      margin-bottom: 24px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn-green {
+      background-color: #2d6a4f;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 25px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .btn-outline {
+      background-color: white;
+      color: #2d6a4f;
+      border: 2px solid #2d6a4f;
+      padding: 12px 24px;
+      border-radius: 25px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .btn-green:hover {
+      background-color: #1f4d38;
+    }
+
+    .btn-outline:hover {
+      background-color: #f0f4f8;
+    }
+
+  </style>
 </head>
 <body>
-    <h1>Hi, I'm Rehet</h1>
-    <h2>I'm learning to code</h2>
-    <h3>I love coding</h3>
-    
-    <p>I know C and C++ and I'm now learning web development.</p>
-    <p>I'm going to study CS abroad in August.</p>
-    <p>I am from Patiala, Punjab but I live in Ghaziabad.</p>
 
-    <button>Say Hello</button>
-    <button>View my project</button>
+  <!-- HEADER -->
+  <div class="header">
+    <div class="avatar">
+      <span class="avatar-letter">R</span>
+    </div>
+    <h1>Hi, I'm Rehet 👋</h1>
+    <p>CS student · Web developer in the making</p>
+  </div>
+
+  <!-- CARD -->
+  <div class="card">
+
+    <div class="skills">
+      <div class="skill-badge">
+        <h3>C++</h3>
+        <p>already know</p>
+      </div>
+      <div class="skill-badge">
+        <h3>HTML</h3>
+        <p>learning now</p>
+      </div>
+      <div class="skill-badge">
+        <h3>React</h3>
+        <p>coming soon</p>
+      </div>
+    </div>
+
+    <p class="about">
+      From Patiala, Punjab — heading abroad in August to study
+      Computer Science. Building real projects before uni starts.
+    </p>
+
+    <div class="buttons">
+      <button class="btn-green">Say Hello</button>
+      <button class="btn-outline">View My Projects</button>
+    </div>
+
+  </div>
+
 </body>
 </html>
