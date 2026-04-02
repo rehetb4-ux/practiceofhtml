@@ -1,169 +1,787 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Rehet's Website</title>
-  <style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MindSpace — Mental Health Ecosystem</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg:        #F2F8F4;
+  --bg2:       #EAF3EC;
+  --surface:   #DCF0E2;
+  --surface2:  #CDEBD6;
+  --card:      #F2EDC2;
+  --card2:     #F7FBF8;
+  --text:      #0F2B1A;
+  --text2:     #000000;
+  --muted:     #000000;
+  --primary:   #2A7A4B;
+  --primary2:  #1E5E38;
+  --accent:    #4CAF72;
+  --accent2:   #38976A;
+  --lime:      #8BC34A;
+  --teal:      #26A69A;
+  --sage:      #7BAF8A;
+  --emerald:   #00897B;
+  --mint:      #A8D5B5;
+  --forest:    #1B5E20;
+  --warn:      #C0392B;
+  --gold:      #C8A84B;
+  --backgroudpl: #D73535;
+  --border:    rgba(42,122,75,0.12);
+  --border2:   rgba(42,122,75,0.22);
+  --glow:      rgba(42,122,75,0.2);
+  --glow2:     rgba(76,175,114,0.18);
+  --shadow:    rgba(15,43,26,0.08);
+  --nav-h:     66px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden;line-height:1.6;}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:.5;}
+::-webkit-scrollbar{width:6px;}::-webkit-scrollbar-track{background:var(--bg2);}::-webkit-scrollbar-thumb{background:var(--accent);border-radius:10px;}
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+/* NAV */
+nav{position:fixed;top:0;width:100%;z-index:500;padding:0 5vw;display:flex;justify-content:space-between;align-items:center;height:var(--nav-h);background:#F2F8F4;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border2);}
+.logo{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;text-decoration:none;color:var(--text);display:flex;align-items:center;gap:.5rem;letter-spacing:-0.02em;}
+.logo-dot{width:9px;height:9px;background:var(--accent);border-radius:50%;box-shadow:0 0 10px var(--glow2);animation:pdot 2.5s ease infinite;}
+@keyframes pdot{0%,100%{transform:scale(1);box-shadow:0 0 8px var(--glow2);}50%{transform:scale(1.3);box-shadow:0 0 18px var(--glow2);}}
+.logo span{color:var(--primary);}
+.nav-links{display:flex;gap:0;list-style:none;align-items:center;}
+.nav-links a{text-decoration:none;color:var(--black);font-size:1.1rem;font-weight:600;padding:0 1.2rem;height:var(--nav-h);display:flex;align-items:center;border-bottom:2.5px solid transparent;transition:color .2s,border-color .2s;}
+.nav-links a:hover{color:var(--primary);border-bottom-color:var(--accent);}
+.nav-pill{background:var(--primary)!important;color:#fff!important;border-radius:8px!important;padding:.5rem 1.4rem!important;height:auto!important;font-weight:600!important;border-bottom:none!important;font-size:.8rem!important;margin-left:.7rem;box-shadow:0 4px 18px var(--glow);transition:all .2s!important;}
+.nav-pill:hover{background:var(--backgroudpl)!important;transform:translateY(-1px);box-shadow:0 8px 24px var(--glow)!important;}
 
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f4f8;
-    }
+#qexit{position:fixed;bottom:2rem;right:2rem;z-index:999;background:var(--warn);color:#fff;border:none;border-radius:8px;padding:.6rem 1.3rem;font-family:'DM Sans',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;box-shadow:0 4px 18px rgba(192,57,43,0.35);transition:all .2s;}
+#qexit:hover{transform:translateY(-2px);}
 
-    /* HEADER SECTION */
-    .header {
-      background-color: #1a1a2e;
-      padding: 50px 40px;
-    }
+/* SHARED */
+section.page-section{padding:7rem 5vw;position:relative;overflow:hidden;}
+.orb{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0;}
+.s-label{font-size:.63rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--accent2);margin-bottom:.75rem;display:flex;align-items:center;gap:.55rem;}
+.s-label::before{content:'';width:20px;height:2px;background:var(--accent);border-radius:2px;}
+.s-title{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,3.8vw,3.6rem);font-weight:700;letter-spacing:-.025em;line-height:1.1;margin-bottom:1.2rem;color:var(--text);}
+.s-title em{font-style:italic;color:var(--primary);}
+.btn-primary{background:var(--primary);color:#fff;border:none;padding:.85rem 2rem;border-radius:10px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:.9rem;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem;transition:all .25s;cursor:pointer;box-shadow:0 4px 20px var(--glow);}
+.btn-primary:hover{background:var(--backgroudpl);transform:translateY(-2px);box-shadow:0 8px 28px var(--glow);}
+.btn-ghost{background:transparent;color:var(--text2);border:1.5px solid var(--border2);padding:.85rem 2rem;border-radius:10px;font-family:'DM Sans',sans-serif;font-weight:500;font-size:.9rem;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem;transition:all .25s;cursor:pointer;}
+.btn-ghost:hover{border-color:var(--accent);color:var(--primary);background:rgba(76,175,114,0.07);}
 
-    .avatar {
-      width: 70px;
-      height: 70px;
-      background-color: #2d6a4f;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 16px;
-    }
+/* HERO */
+#home{min-height:100vh;display:flex;align-items:center;padding:9rem 5vw 5rem;border-bottom:1px solid var(--border2);position:relative;}
+.hero-inner{max-width:720px;position:relative;z-index:1;}
+.hero-badge{display:inline-flex;align-items:center;gap:.55rem;background:rgba(42,122,75,0.08);border:1px solid rgba(42,122,75,0.22);border-radius:100px;padding:.38rem 1.1rem;font-size:.69rem;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--primary);margin-bottom:2.2rem;}
+.badge-dot{width:6px;height:6px;background:var(--accent);border-radius:50%;box-shadow:0 0 8px var(--glow2);}
+h1{font-family:'Playfair Display',serif;font-size:clamp(3.2rem,6vw,6.5rem);font-weight:700;line-height:1.0;letter-spacing:-0.03em;margin-bottom:1.6rem;color:var(--text);}
+h1 em{font-style:italic;color:var(--primary);}
+.hero-sub{font-size:1.05rem;color:var(--muted);line-height:1.8;max-width:520px;margin-bottom:2.8rem;font-weight:300;}
+.hero-btns{display:flex;gap:.8rem;flex-wrap:wrap;}
+.hero-stats{display:flex;gap:2.5rem;margin-top:3.5rem;padding-top:2.5rem;border-top:1px solid var(--border2);flex-wrap:wrap;}
+.hstat .num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--primary);line-height:1;}
+.hstat .lbl{font-size:.72rem;color:var(--muted);margin-top:.35rem;line-height:1.45;}
 
-    .avatar-letter {
-      color: white;
-      font-size: 28px;
-      font-weight: bold;
-    }
+/* ABOUT */
+#about{background:var(--bg2);border-top:1px solid var(--border2);border-bottom:1px solid var(--border2);}
+.about-grid{display:grid;grid-template-columns:1fr 1.3fr;gap:6rem;align-items:start;}
+.about-body p{color:var(--text2);line-height:1.85;font-size:.93rem;margin-bottom:1.1rem;font-weight:300;}
+.conditions-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
+.cond-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.4rem;transition:all .25s;position:relative;overflow:hidden;}
+.cond-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--primary),var(--accent));transform:scaleX(0);transition:transform .3s;}
+.cond-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 10px 30px var(--shadow);}
+.cond-card:hover::after{transform:scaleX(1);}
+.cond-icon{font-size:1.5rem;margin-bottom:.6rem;display:block;}
+.cond-card h4{font-size:.88rem;font-weight:600;margin-bottom:.35rem;color:var(--text);}
+.cond-card p{font-size:.77rem;color:var(--muted);line-height:1.65;}
+.cond-pill{display:inline-block;background:rgba(42,122,75,0.1);border:1px solid rgba(42,122,75,0.22);border-radius:4px;padding:.12rem .55rem;font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--primary);margin-top:.6rem;}
 
-    .header h1 {
-      color: white;
-      font-size: 32px;
-      margin-bottom: 8px;
-    }
+/* BREATHE */
+#breathe{background:var(--bg);border-bottom:1px solid var(--border2);text-align:center;}
+.breathe-container{max-width:480px;margin:2.5rem auto 0;}
+.breathe-ring-wrap{position:relative;width:260px;height:260px;margin:0 auto 2rem;display:flex;align-items:center;justify-content:center;}
+.breathe-svg{position:absolute;inset:0;transform:rotate(-90deg);}
+.breathe-svg circle{fill:none;stroke-width:3.5;stroke-linecap:round;}
+.br-track{stroke:var(--surface);}
+.br-progress{stroke:var(--primary);stroke-dasharray:722;stroke-dashoffset:722;filter:drop-shadow(0 0 8px rgba(42,122,75,0.4));transition:stroke-dashoffset .1s linear;}
+.breathe-inner{position:relative;width:195px;height:195px;border-radius:50%;background:radial-gradient(circle,rgba(76,175,114,0.15),rgba(42,122,75,0.04));border:2px solid rgba(42,122,75,0.2);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .5s ease;}
+.breathe-inner.expanding{transform:scale(1.22);background:radial-gradient(circle,rgba(76,175,114,0.25),rgba(42,122,75,0.06));box-shadow:0 0 60px rgba(76,175,114,0.25);}
+.breathe-inner.holding{background:radial-gradient(circle,rgba(200,168,75,0.2),rgba(200,168,75,0.04));border-color:rgba(200,168,75,0.4);box-shadow:0 0 60px rgba(200,168,75,0.2);}
+.breathe-inner.contracting{transform:scale(0.88);background:radial-gradient(circle,rgba(38,166,154,0.15),rgba(38,166,154,0.03));border-color:rgba(38,166,154,0.3);box-shadow:0 0 40px rgba(38,166,154,0.18);}
+.breathe-emoji{font-size:2.2rem;margin-bottom:.3rem;}
+#breathePhase{font-size:.78rem;font-weight:700;color:var(--primary);letter-spacing:.14em;text-transform:uppercase;}
+#breatheCount{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:var(--text);line-height:1;margin-top:.15rem;}
+.breathe-label{font-size:.78rem;color:var(--muted);}
+.breathe-controls{display:flex;gap:1rem;justify-content:center;align-items:center;flex-wrap:wrap;}
+.breathe-btn{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:.65rem 1.7rem;font-family:'DM Sans',sans-serif;font-size:.84rem;font-weight:600;cursor:pointer;transition:all .2s;box-shadow:0 4px 14px var(--glow);}
+.breathe-btn:hover{background:var(--primary2);transform:translateY(-1px);}
+.breathe-select{background:var(--card);border:1.5px solid var(--border2);color:var(--text2);padding:.62rem 1rem;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.82rem;outline:none;cursor:pointer;}
+#breatheCycles{font-size:.78rem;color:var(--muted);margin-top:1rem;}
 
-    .header p {
-      color: #9FE1CB;
-      font-size: 16px;
-    }
+/* CHAT */
+#chat-section{background:var(--bg2);border-bottom:1px solid var(--border2);}
+.chat-layout{display:grid;grid-template-columns:1fr 1.1fr;gap:5rem;align-items:start;}
+.chat-info p{color:var(--text2);line-height:1.8;font-size:.93rem;margin-bottom:1rem;font-weight:300;}
+.chat-features{display:flex;flex-direction:column;gap:.7rem;margin-top:1.4rem;}
+.cf-item{display:flex;align-items:center;gap:.75rem;font-size:.83rem;color:var(--text2);}
+.cf-icon{width:32px;height:32px;border-radius:8px;background:rgba(42,122,75,0.1);border:1px solid rgba(42,122,75,0.2);display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0;}
+.privacy-note{margin-top:1.5rem;padding:1.1rem 1.3rem;background:rgba(42,122,75,0.06);border:1px solid rgba(42,122,75,0.2);border-radius:10px;border-left:3px solid var(--primary);}
+.privacy-note .pn-label{font-size:.62rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--primary);margin-bottom:.4rem;}
+.privacy-note p{font-size:.8rem;color:var(--muted);line-height:1.65;margin:0;}
+.chat-box{background:var(--card);border:1px solid var(--border2);border-radius:16px;display:flex;flex-direction:column;height:540px;overflow:hidden;box-shadow:0 20px 60px var(--shadow);}
+.chat-header{padding:1rem 1.3rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.8rem;background:linear-gradient(135deg,rgba(42,122,75,0.12),rgba(76,175,114,0.07));}
+.chat-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;font-size:1.1rem;box-shadow:0 4px 14px var(--glow);}
+.chat-hinfo h4{font-size:.9rem;font-weight:600;color:var(--text);}
+.online{display:flex;align-items:center;gap:.35rem;margin-top:.1rem;}
+.online-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--glow2);animation:pdot 2s ease infinite;}
+.chat-hinfo span{font-size:.68rem;color:var(--muted);}
+.chat-mood-bar{display:flex;gap:.4rem;padding:.55rem .9rem;border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none;}
+.chat-mood-bar::-webkit-scrollbar{display:none;}
+.qp{background:rgba(42,122,75,0.07);border:1px solid rgba(42,122,75,0.18);border-radius:100px;padding:.3rem .85rem;font-size:.7rem;color:var(--primary);font-family:'DM Sans',sans-serif;white-space:nowrap;transition:all .2s;cursor:pointer;font-weight:500;}
+.qp:hover{background:rgba(42,122,75,0.15);border-color:var(--primary);}
+.chat-msgs{flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:.75rem;}
+.chat-msgs::-webkit-scrollbar{width:3px;}
+.chat-msgs::-webkit-scrollbar-thumb{background:var(--border2);border-radius:10px;}
+.msg{max-width:84%;padding:.72rem 1rem;border-radius:10px;font-size:.85rem;line-height:1.65;}
+.msg.bot{background:var(--surface);border:1px solid var(--border);align-self:flex-start;color:var(--text2);border-radius:3px 10px 10px 10px;}
+.msg.user{background:var(--primary);color:#fff;align-self:flex-end;border-radius:10px 3px 10px 10px;box-shadow:0 4px 14px var(--glow);}
+.msg.typing{background:var(--surface);border:1px solid var(--border);align-self:flex-start;padding:.9rem 1.1rem;border-radius:3px 10px 10px 10px;}
+.typing-dots{display:flex;gap:.35rem;align-items:center;}
+.typing-dots span{width:5px;height:5px;border-radius:50%;background:var(--muted);animation:dp 1.2s ease infinite;}
+.typing-dots span:nth-child(2){animation-delay:.2s;}
+.typing-dots span:nth-child(3){animation-delay:.4s;}
+@keyframes dp{0%,100%{transform:scale(1);opacity:.4;}50%{transform:scale(1.35);opacity:1;}}
+.chat-input-row{padding:.9rem;border-top:1px solid var(--border);display:flex;gap:.5rem;background:var(--card2);}
+.chat-input{flex:1;background:var(--surface);border:1.5px solid var(--border2);color:var(--text);padding:.62rem 1rem;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.85rem;outline:none;transition:all .2s;}
+.chat-input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(42,122,75,0.1);}
+.chat-input::placeholder{color:var(--muted);}
+.chat-send{background:var(--primary);border:none;border-radius:8px;width:38px;height:38px;color:#fff;font-size:1rem;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;box-shadow:0 3px 10px var(--glow);}
+.chat-send:hover{background:var(--primary2);transform:scale(1.05);}
 
-    /* CARD SECTION */
-    .card {
-      background-color: white;
-      margin: 30px 40px;
-      border-radius: 16px;
-      padding: 30px;
-    }
+/* REFRAME */
+#reframe{background:var(--bg);}
+.reframe-tool{max-width:720px;background:var(--card);border:1px solid var(--border2);border-radius:16px;padding:2.2rem;margin-top:2.5rem;box-shadow:0 16px 50px var(--shadow);}
+.reframe-tool h3{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:600;margin-bottom:.35rem;color:var(--text);}
+.reframe-tool>p{color:var(--muted);font-size:.85rem;margin-bottom:1.4rem;line-height:1.7;}
+.thought-input{width:100%;background:var(--surface);border:1.5px solid var(--border2);color:var(--text);padding:1rem 1.1rem;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.9rem;min-height:90px;resize:vertical;outline:none;transition:all .2s;margin-bottom:1rem;}
+.thought-input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(42,122,75,0.1);}
+.thought-input::placeholder{color:var(--muted);}
+.reframe-result{display:none;background:rgba(42,122,75,0.05);border:1px solid rgba(42,122,75,0.18);border-radius:12px;padding:1.5rem;margin-top:1.2rem;}
+.distortion-badge{display:inline-block;background:rgba(192,57,43,0.08);border:1px solid rgba(192,57,43,0.2);border-radius:4px;padding:.22rem .7rem;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--warn);margin-bottom:.8rem;}
+.reframe-result h4{font-size:.87rem;font-weight:600;color:var(--primary);margin-bottom:.5rem;}
+.reframe-result p{color:var(--text2);font-size:.84rem;line-height:1.75;}
+.reframe-new{margin-top:1.1rem;padding:1rem 1.2rem;background:rgba(42,122,75,0.07);border-left:3px solid var(--primary);border-radius:0 8px 8px 0;font-family:'Playfair Display',serif;font-style:italic;font-size:1rem;color:var(--primary2);line-height:1.75;}
 
-    .skills {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 24px;
-    }
+/* JOURNAL */
+#journal{background:var(--bg2);border-top:1px solid var(--border2);border-bottom:1px solid var(--border2);}
+.journal-layout{display:grid;grid-template-columns:1fr 1.2fr;gap:5rem;align-items:start;}
+.journal-info p{color:var(--text2);font-size:.93rem;line-height:1.8;font-weight:300;margin-bottom:1rem;}
+.journal-box{background:var(--card);border:1px solid var(--border2);border-radius:16px;overflow:hidden;box-shadow:0 16px 50px var(--shadow);}
+.journal-tabs{display:flex;border-bottom:1px solid var(--border);background:var(--card2);}
+.j-tab{flex:1;padding:.82rem;background:transparent;border:none;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:.79rem;font-weight:600;cursor:pointer;transition:all .2s;border-bottom:2.5px solid transparent;letter-spacing:.04em;}
+.j-tab.active{color:var(--primary);border-bottom-color:var(--primary);background:rgba(42,122,75,0.05);}
+.journal-panel{display:none;padding:1.4rem;}
+.journal-panel.active{display:block;}
+.journal-prompts-list{display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.2rem;}
+.j-prompt{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.78rem 1rem;font-size:.83rem;color:var(--text2);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:.65rem;}
+.j-prompt:hover{border-color:var(--primary);color:var(--primary);background:rgba(42,122,75,0.06);}
+.j-prompt span{opacity:.55;font-size:.9rem;}
+.journal-write{width:100%;background:var(--surface);border:1.5px solid var(--border2);color:var(--text);padding:1rem;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.88rem;min-height:180px;resize:vertical;outline:none;transition:all .2s;line-height:1.7;}
+.journal-write:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(42,122,75,0.1);}
+.journal-write::placeholder{color:var(--muted);}
+.journal-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:.8rem;}
+.j-char-count{font-size:.72rem;color:var(--muted);}
+.journal-entries-list{display:flex;flex-direction:column;gap:.6rem;max-height:300px;overflow-y:auto;}
+.j-entry{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.9rem 1rem;}
+.j-entry-meta{display:flex;justify-content:space-between;font-size:.68rem;color:var(--muted);margin-bottom:.4rem;}
+.j-entry-text{font-size:.82rem;color:var(--text2);line-height:1.65;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+.j-mood-tag{font-size:.6rem;background:rgba(42,122,75,0.1);border:1px solid rgba(42,122,75,0.22);color:var(--primary);padding:.1rem .5rem;border-radius:4px;font-weight:600;}
 
-    .skill-badge {
-      background-color: #f0f4f8;
-      border-radius: 8px;
-      padding: 12px 20px;
-      text-align: center;
-    }
+/* MOOD */
+#mood{background:var(--bg);border-bottom:1px solid var(--border2);}
+.mood-layout{display:grid;grid-template-columns:1fr 1.5fr;gap:2.5rem;align-items:start;margin-top:2.5rem;}
+.mood-check{background:var(--card);border:1px solid var(--border2);border-radius:16px;padding:2rem;box-shadow:0 16px 50px var(--shadow);}
+.mood-check h3{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:600;margin-bottom:.35rem;color:var(--text);}
+.mood-check>p{font-size:.8rem;color:var(--muted);margin-bottom:1.4rem;}
+.mood-emojis{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.2rem;}
+.m-btn{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.55rem .65rem;font-size:1.5rem;transition:all .2s;position:relative;cursor:pointer;}
+.m-btn:hover,.m-btn.active{border-color:var(--primary);background:rgba(42,122,75,0.1);transform:scale(1.1);}
+.m-btn::after{content:attr(data-l);position:absolute;bottom:-1.4rem;left:50%;transform:translateX(-50%);font-size:.56rem;font-family:'DM Sans',sans-serif;color:var(--muted);white-space:nowrap;}
+.mood-sliders{margin-top:2.5rem;}
+.slider-row{margin-bottom:1.2rem;}
+.slider-row label{font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between;margin-bottom:.5rem;}
+.slider-row label span{color:var(--primary);font-weight:700;}
+input[type=range]{-webkit-appearance:none;width:100%;height:4px;background:var(--surface2);border-radius:2px;outline:none;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:17px;height:17px;border-radius:50%;background:var(--primary);border:2px solid #fff;box-shadow:0 0 0 2px var(--primary);cursor:pointer;transition:transform .15s;}
+input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.2);}
+#moodMsg{display:none;margin-top:1.2rem;padding:.85rem 1.1rem;background:rgba(42,122,75,0.08);border:1px solid rgba(42,122,75,0.22);border-radius:8px;color:var(--primary2);font-size:.84rem;}
+.chart-wrap{background:var(--card);border:1px solid var(--border2);border-radius:16px;padding:2rem;box-shadow:0 16px 50px var(--shadow);}
+.chart-wrap h3{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:500;margin-bottom:1.5rem;color:var(--text);}
 
-    .skill-badge h3 {
-      color: #1a1a2e;
-      font-size: 18px;
-      margin-bottom: 4px;
-    }
+/* TIPS */
+#tips{background:var(--bg2);border-bottom:1px solid var(--border2);}
+.tips-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2.5rem;}
+.tip-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.8rem 1.5rem;transition:all .25s;position:relative;overflow:hidden;}
+.tip-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--primary),var(--accent));transform:scaleX(0);transition:transform .3s ease;}
+.tip-card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 14px 36px var(--shadow);}
+.tip-card:hover::after{transform:scaleX(1);}
+.tip-num{font-family:'Playfair Display',serif;font-size:.7rem;color:var(--sage);display:block;margin-bottom:.7rem;}
+.tip-card h4{font-size:.9rem;font-weight:600;margin-bottom:.5rem;color:var(--text);}
+.tip-card p{font-size:.8rem;color:var(--muted);line-height:1.75;}
 
-    .skill-badge p {
-      color: #888888;
-      font-size: 12px;
-    }
+/* RESOURCES */
+#resources{background:var(--bg);border-bottom:1px solid var(--border2);}
+.emergency-banner{background:linear-gradient(135deg,rgba(27,94,32,0.12),rgba(42,122,75,0.06));border:1px solid rgba(42,122,75,0.25);border-radius:14px;padding:1.6rem 2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;margin-bottom:3rem;}
+.emergency-banner strong{font-size:1rem;font-weight:700;color:var(--text);display:block;margin-bottom:.25rem;}
+.emergency-banner>div>span{font-size:.82rem;color:var(--text2);}
+.emrg-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--primary);}
+.resources-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem;}
+.res-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.6rem;transition:all .25s;}
+.res-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 12px 32px var(--shadow);}
+.res-type{display:inline-block;background:rgba(42,122,75,0.1);border:1px solid rgba(42,122,75,0.22);border-radius:4px;padding:.15rem .65rem;font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--primary);margin-bottom:.9rem;}
+.res-card h4{font-size:.96rem;font-weight:600;margin-bottom:.45rem;color:var(--text);}
+.res-card p{font-size:.78rem;color:var(--muted);line-height:1.65;margin-bottom:.9rem;}
+.res-contact{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:500;color:var(--primary2);}
+.tiers-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:3.5rem;}
+.tier-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:2rem;transition:all .25s;}
+.tier-card.featured{border-color:var(--primary);border-width:1.5px;background:linear-gradient(160deg,rgba(42,122,75,0.06),var(--card));box-shadow:0 0 0 1px rgba(42,122,75,0.1),0 20px 50px rgba(42,122,75,0.08);position:relative;}
+.tier-card.featured::before{content:'Most Popular';position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--primary);color:#fff;font-size:.6rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;padding:.3rem 1rem;border-radius:100px;white-space:nowrap;}
+.tier-name{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:600;color:var(--text);}
+.tier-price{font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:700;margin:.9rem 0 .2rem;color:var(--primary);}
+.tier-price sub{font-size:.9rem;color:var(--muted);font-weight:300;}
+.tier-period{font-size:.72rem;color:var(--muted);margin-bottom:1.5rem;}
+.tier-features{list-style:none;display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.5rem;}
+.tier-features li{font-size:.82rem;color:var(--text2);display:flex;align-items:center;gap:.5rem;}
+.tier-features li::before{content:'✦';color:var(--accent2);font-size:.6rem;flex-shrink:0;}
 
-    .about {
-      color: #555555;
-      font-size: 15px;
-      line-height: 1.8;
-      margin-bottom: 24px;
-    }
+/* CONTACT */
+#contact{background:var(--bg2);border-top:1px solid var(--border2);}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start;}
+.contact-left p{color:var(--text2);line-height:1.85;font-size:.93rem;margin-bottom:2rem;font-weight:300;}
+.contact-detail{display:flex;gap:1rem;margin-bottom:1.2rem;align-items:flex-start;}
+.cd-icon{width:38px;height:38px;border-radius:8px;background:rgba(42,122,75,0.1);border:1px solid rgba(42,122,75,0.22);display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;}
+.cd-body{font-size:.84rem;color:var(--muted);line-height:1.65;}
+.cd-body strong{display:block;color:var(--text);font-weight:600;margin-bottom:.15rem;font-size:.86rem;}
+.form-group{margin-bottom:1rem;}
+.form-group label{display:block;font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.45rem;}
+.form-group input,.form-group select,.form-group textarea{width:100%;background:var(--card);border:1.5px solid var(--border2);color:var(--text);padding:.78rem 1rem;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.87rem;outline:none;transition:all .2s;}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(42,122,75,0.12);}
+.form-group textarea{min-height:100px;resize:vertical;}
+.form-group input::placeholder,.form-group textarea::placeholder{color:var(--muted);}
+.form-group select option{background:var(--card);}
+.form-success{display:none;margin-top:1rem;padding:1rem 1.2rem;background:rgba(42,122,75,0.07);border:1px solid rgba(42,122,75,0.22);border-radius:10px;color:var(--primary2);font-size:.85rem;line-height:1.65;}
 
-    .buttons {
-      display: flex;
-      gap: 12px;
-    }
+/* FOOTER */
+footer{background:var(--forest);padding:2.5rem 5vw;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:2rem;}
+footer .logo{color:#fff;}
+footer .logo span{color:var(--mint);}
+footer .logo-dot{background:var(--mint);animation:none;}
+.footer-links{display:flex;gap:2rem;justify-content:center;}
+.footer-links a{text-decoration:none;color:rgba(168,213,181,0.6);font-size:.78rem;transition:color .2s;}
+.footer-links a:hover{color:var(--mint);}
+footer p{font-size:.72rem;color:rgba(168,213,181,0.4);text-align:right;}
 
-    .btn-green {
-      background-color: #2d6a4f;
-      color: white;
-      border: none;
-      padding: 12px 24px;
-      border-radius: 25px;
-      font-size: 15px;
-      cursor: pointer;
-    }
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .65s ease,transform .65s ease;}
+.reveal.vis{opacity:1;transform:none;}
 
-    .btn-outline {
-      background-color: white;
-      color: #2d6a4f;
-      border: 2px solid #2d6a4f;
-      padding: 12px 24px;
-      border-radius: 25px;
-      font-size: 15px;
-      cursor: pointer;
-    }
-
-    .btn-green:hover {
-      background-color: #1f4d38;
-    }
-
-    .btn-outline:hover {
-      background-color: #f0f4f8;
-    }
-
-  </style>
+@media(max-width:1000px){.nav-links li:not(:last-child):not(:nth-last-child(2)){display:none;}}
+@media(max-width:860px){
+  .nav-links li:not(:last-child){display:none;}
+  #home{padding:7rem 1.5rem 3rem;}
+  .about-grid,.chat-layout,.mood-layout,.contact-grid,.journal-layout{grid-template-columns:1fr;gap:2.5rem;}
+  section.page-section{padding:5rem 1.5rem;}
+  .tips-grid,.tiers-grid{grid-template-columns:1fr;}
+  footer{grid-template-columns:1fr;text-align:center;}
+  footer p,.footer-links{text-align:center;justify-content:center;}
+}
+</style>
 </head>
 <body>
 
-  <!-- HEADER -->
-  <div class="header">
-    <div class="avatar">
-      <span class="avatar-letter">R</span>
+<button id="qexit" onclick="window.location.href='https://weather.com'">⚡ Quick Exit</button>
+
+<nav>
+  <a href="#home" class="logo"><div class="logo-dot"></div>Mind<span>Space</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#breathe">Breathe</a></li>
+    <li><a href="#chat-section">AI Chat</a></li>
+    <li><a href="#journal">Journal</a></li>
+    <li><a href="#mood">Mood</a></li>
+    <li><a href="#resources">Resources</a></li>
+    <li><a href="#contact" class="nav-pill">Get Help →</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="home">
+  <div class="orb" style="width:600px;height:600px;background:rgba(200,168,75,0.1);top:-150px;right:-100px;"></div>
+<div class="orb" style="width:400px;height:400px;background:rgba(192,57,43,0.06);bottom:-50px;left:100px;"></div>
+  <div class="hero-inner">
+    <div class="hero-badge"><div class="badge-dot"></div>Mental Health Ecosystem · Est. 2025</div>
+    <h1>Your mind<br>deserves <em>care.</em></h1>
+    <p class="hero-sub">Affordable, judgment-free support — combining AI tools, breathing exercises, journaling, and real therapists. Because mental health care should be accessible to everyone.</p>
+    <div class="hero-btns">
+      <a href="#chat-section" class="btn-primary">Talk to Mira →</a>
+      <a href="#breathe" class="btn-ghost">Try Breathing Exercise</a>
     </div>
-    <h1>Hi, I'm Rehet 👋</h1>
-    <p>CS student · Web developer in the making</p>
+    <div class="hero-stats">
+      <div class="hstat"><div class="num">970M+</div><div class="lbl">Living with mental health<br>conditions worldwide</div></div>
+      <div class="hstat"><div class="num">75%</div><div class="lbl">Cases untreated in<br>low-income regions</div></div>
+      <div class="hstat"><div class="num">24/7</div><div class="lbl">AI support,<br>always available</div></div>
+    </div>
   </div>
+</section>
 
-  <!-- CARD -->
-  <div class="card">
-
-    <div class="skills">
-      <div class="skill-badge">
-        <h3>C++</h3>
-        <p>already know</p>
-      </div>
-      <div class="skill-badge">
-        <h3>HTML</h3>
-        <p>learning now</p>
-      </div>
-      <div class="skill-badge">
-        <h3>React</h3>
-        <p>coming soon</p>
-      </div>
+<!-- ABOUT -->
+<section class="page-section" id="about">
+  <div class="orb" style="width:450px;height:450px;background:--backgroudpl;top:-80px;right:-80px;"></div>
+  <div class="about-grid">
+    <div class="about-body reveal">
+      <div class="s-label">Understanding</div>
+      <h2 class="s-title">What is<br><em>mental health?</em></h2>
+      <p>Mental health is the foundation of how we think, feel, and connect with the world. It shapes every decision we make, every relationship we build, and every challenge we face.</p>
+      <p>Despite its importance, mental health remains deeply misunderstood. Mental illness is not weakness — it's a health condition, just like any other, and it deserves the same care and attention.</p>
+      <p>MindSpace was built to close the gap between people in need and the support they deserve.</p>
+      <a href="#resources" class="btn-primary" style="margin-top:1.5rem;">Explore Resources →</a>
     </div>
-
-    <p class="about">
-      From Patiala, Punjab — heading abroad in August to study
-      Computer Science. Building real projects before uni starts.
-    </p>
-
-    <div class="buttons">
-      <button class="btn-green">Say Hello</button>
-      <button class="btn-outline">View My Projects</button>
+    <div class="conditions-grid reveal">
+      <div class="cond-card"><span class="cond-icon">🌧️</span><h4>Depression</h4><p>Persistent low mood and fatigue. Highly treatable with therapy, medication, and lifestyle support.</p><span class="cond-pill">Common</span></div>
+      <div class="cond-card"><span class="cond-icon">⚡</span><h4>Anxiety</h4><p>Excessive worry disrupting daily life. The most prevalent mental health condition worldwide.</p><span class="cond-pill">Most Common</span></div>
+      <div class="cond-card"><span class="cond-icon">🌊</span><h4>PTSD</h4><p>Emotional aftermath of trauma. Trauma-focused therapies are highly effective.</p><span class="cond-pill">Treatable</span></div>
+      <div class="cond-card"><span class="cond-icon">🎭</span><h4>Bipolar Disorder</h4><p>Extreme mood cycles. Managed effectively with medication and structured therapy.</p><span class="cond-pill">Manageable</span></div>
+      <div class="cond-card"><span class="cond-icon">🪞</span><h4>OCD</h4><p>Intrusive thoughts and repetitive behaviors. CBT (ERP) achieves excellent outcomes.</p><span class="cond-pill">Responsive</span></div>
+      <div class="cond-card"><span class="cond-icon">🤝</span><h4>Social Anxiety</h4><p>Fear of social situations. Gradual exposure therapy builds lasting confidence.</p><span class="cond-pill">Common</span></div>
     </div>
-
   </div>
+</section>
 
+<!-- BREATHE -->
+<section class="page-section" id="breathe">
+  <div class="reveal" style="text-align:center;max-width:560px;margin:0 auto;">
+    <div class="s-label" style="justify-content:center;">Breathing Tool</div>
+    <h2 class="s-title">Calm your<br><em>nervous system.</em></h2>
+    <p style="color:var(--muted);font-size:.9rem;line-height:1.78;margin-bottom:2rem;">Guided breathing activates the parasympathetic nervous system in minutes. Choose a technique and follow the rhythm.</p>
+  </div>
+  <div class="breathe-container reveal">
+    <div class="breathe-controls" style="margin-bottom:1.5rem;">
+      <select class="breathe-select" id="breatheTech" onchange="resetBreath()">
+        <option value="4-4-4-4">Box Breathing (4-4-4-4)</option>
+        <option value="4-7-8">4-7-8 Relaxation</option>
+        <option value="5-5">Equal Breathing (5-5)</option>
+        <option value="3-6">Calming (3-6)</option>
+      </select>
+    </div>
+    <div class="breathe-ring-wrap">
+      <svg class="breathe-svg" viewBox="0 0 260 260" xmlns="http://www.w3.org/2000/svg">
+        <circle class="br-track" cx="130" cy="130" r="115"/>
+        <circle class="br-progress" id="brProgress" cx="130" cy="130" r="115"/>
+      </svg>
+      <div class="breathe-inner" id="breatheCircle" onclick="toggleBreath()">
+        <div class="breathe-emoji" id="breatheEmoji">🌿</div>
+        <div id="breathePhase">tap to start</div>
+        <div id="breatheCount">—</div>
+        <div class="breathe-label" id="breatheLabel"></div>
+      </div>
+    </div>
+    <div class="breathe-controls">
+      <button class="breathe-btn" id="breatheToggle" onclick="toggleBreath()">▶ Start</button>
+      <button class="breathe-btn" style="background:var(--surface2);color:var(--text2);box-shadow:none;border:1.5px solid var(--border2);" onclick="resetBreath()">↺ Reset</button>
+    </div>
+    <p id="breatheCycles" style="text-align:center;margin-top:1rem;font-size:.78rem;color:var(--muted);">Complete 5 cycles for maximum benefit</p>
+  </div>
+</section>
+
+<!-- AI CHAT -->
+<section class="page-section" id="chat-section">
+  <div class="orb" style="width:500px;height:500px;background:rgba(42,122,75,0.07);bottom:-100px;right:-120px;"></div>
+  <div class="chat-layout">
+    <div class="chat-info reveal">
+      <div class="s-label">AI Companion</div>
+      <h2 class="s-title">Talk to<br><em>someone</em><br>anytime.</h2>
+      <p>Mira uses empathetic AI to help you vent, reflect, and understand your needs — with zero judgment and complete privacy.</p>
+      <div class="chat-features">
+        <div class="cf-item"><div class="cf-icon">🔒</div>Anonymous by default — no account needed</div>
+        <div class="cf-item"><div class="cf-icon">🧠</div>Emotionally aware, context-sensitive responses</div>
+        <div class="cf-item"><div class="cf-icon">🌐</div>Available in multiple languages</div>
+        <div class="cf-item"><div class="cf-icon">🤝</div>Bridges to real therapists when you're ready</div>
+      </div>
+      <div class="privacy-note">
+        <div class="pn-label">Privacy First</div>
+        <p>All conversations are anonymous by default. No account needed. Your words are never sold or shared.</p>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="chat-box">
+        <div class="chat-header">
+          <div class="chat-avatar">🤗</div>
+          <div class="chat-hinfo">
+            <h4>Mira — AI Companion</h4>
+            <div class="online"><div class="online-dot"></div><span>Online · Always here for you</span></div>
+          </div>
+        </div>
+        <div class="chat-mood-bar">
+          <button class="qp" onclick="sendQuick(this)">I feel anxious 😰</button>
+          <button class="qp" onclick="sendQuick(this)">Can't sleep 🌙</button>
+          <button class="qp" onclick="sendQuick(this)">Overwhelmed 😮‍💨</button>
+          <button class="qp" onclick="sendQuick(this)">I need to talk 💬</button>
+          <button class="qp" onclick="sendQuick(this)">I feel lonely 💙</button>
+        </div>
+        <div class="chat-msgs" id="chatMsgs">
+          <div class="msg bot">Hi there 👋 I'm Mira. This is a safe, judgment-free space. How are you feeling today?</div>
+        </div>
+        <div class="chat-input-row">
+          <input class="chat-input" id="chatInp" type="text" placeholder="Share what's on your mind…" onkeydown="if(event.key==='Enter')sendMsg()">
+          <button class="chat-send" onclick="sendMsg()">➤</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REFRAME -->
+<section class="page-section" id="reframe">
+  <div class="orb" style="width:400px;height:400px;background:rgba(76,175,114,0.08);top:0;right:0;"></div>
+  <div class="reveal">
+    <div class="s-label">Cognitive Tools</div>
+    <h2 class="s-title">Reframe your<br><em>thoughts.</em></h2>
+    <p style="color:var(--muted);max-width:520px;font-size:.9rem;line-height:1.8;margin-top:.5rem;">Cognitive distortions are habitual negative thinking patterns. Type a thought below and we'll identify the pattern and offer a balanced perspective.</p>
+  </div>
+  <div class="reframe-tool reveal">
+    <h3>Thought Reframing Tool</h3>
+    <p>Type a negative thought. We'll identify the cognitive distortion and suggest a healthier perspective.</p>
+    <textarea class="thought-input" id="thoughtInput" placeholder="e.g. I always mess everything up. Nobody really likes me. I'll never be good enough…"></textarea>
+    <button class="btn-primary" onclick="reframeThought()">Analyze & Reframe →</button>
+    <div class="reframe-result" id="reframeResult">
+      <div class="distortion-badge" id="distortionBadge">Distortion detected</div>
+      <h4>What's happening in your mind:</h4>
+      <p id="reframeExplain"></p>
+      <div class="reframe-new" id="reframeNew"></div>
+    </div>
+  </div>
+</section>
+
+<!-- JOURNAL -->
+<section class="page-section" id="journal">
+  <div class="orb" style="width:400px;height:400px;background:rgba(42,122,75,0.07);bottom:0;left:-100px;"></div>
+  <div class="journal-layout">
+    <div class="reveal">
+      <div class="s-label">Guided Journal</div>
+      <h2 class="s-title">Write your<br><em>way through.</em></h2>
+      <p class="journal-info">Journaling externalizes your thoughts, reducing their weight. Research shows even 5 minutes of daily writing creates measurable improvements in mental clarity and emotional regulation.</p>
+      <p class="journal-info" style="color:var(--muted);">Use the prompts tab for inspiration, or write freely. Your entries are saved locally and never leave your device.</p>
+    </div>
+    <div class="reveal">
+      <div class="journal-box">
+        <div class="journal-tabs">
+          <button class="j-tab active" onclick="switchJTab(this,'write')">✏️ Write</button>
+          <button class="j-tab" onclick="switchJTab(this,'prompts')">💡 Prompts</button>
+          <button class="j-tab" onclick="switchJTab(this,'entries')">📚 Entries</button>
+        </div>
+        <div class="journal-panel active" id="jp-write">
+          <div style="display:flex;gap:.5rem;margin-bottom:.8rem;flex-wrap:wrap;" id="writeMoodTags">
+            <span style="font-size:.7rem;color:var(--muted);align-self:center;">Tag:</span>
+            <button class="qp" onclick="tagMood(this,'😊 Grateful')">😊 Grateful</button>
+            <button class="qp" onclick="tagMood(this,'😔 Low')">😔 Low</button>
+            <button class="qp" onclick="tagMood(this,'😤 Frustrated')">😤 Frustrated</button>
+            <button class="qp" onclick="tagMood(this,'🌟 Hopeful')">🌟 Hopeful</button>
+          </div>
+          <textarea class="journal-write" id="journalText" placeholder="Start writing… no judgment, no rules. Just you and your thoughts." oninput="updateCharCount()"></textarea>
+          <div class="journal-bottom">
+            <span class="j-char-count" id="charCount">0 words</span>
+            <button class="btn-primary" onclick="saveJournalEntry()" style="padding:.55rem 1.3rem;font-size:.8rem;">Save Entry →</button>
+          </div>
+        </div>
+        <div class="journal-panel" id="jp-prompts">
+          <p style="font-size:.8rem;color:var(--muted);margin-bottom:1rem;">Click any prompt to begin writing.</p>
+          <div class="journal-prompts-list">
+            <div class="j-prompt" onclick="usePrompt(this)"><span>💭</span>What's been weighing on your mind this week?</div>
+            <div class="j-prompt" onclick="usePrompt(this)"><span>🌱</span>Name three small things you're grateful for today.</div>
+            <div class="j-prompt" onclick="usePrompt(this)"><span>🔮</span>What would you tell your past self from a year ago?</div>
+            <div class="j-prompt" onclick="usePrompt(this)"><span>💪</span>Describe a challenge you overcame and what it taught you.</div>
+            <div class="j-prompt" onclick="usePrompt(this)"><span>🌊</span>What emotions are you feeling right now, without judgment?</div>
+            <div class="j-prompt" onclick="usePrompt(this)"><span>🏡</span>What does a "good day" feel like to you? Describe it fully.</div>
+          </div>
+        </div>
+        <div class="journal-panel" id="jp-entries">
+          <p style="font-size:.8rem;color:var(--muted);margin-bottom:1rem;" id="entriesHint">Your saved entries will appear here.</p>
+          <div class="journal-entries-list" id="entriesList"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MOOD -->
+<section class="page-section" id="mood">
+  <div class="s-label reveal">Mood Dashboard</div>
+  <h2 class="s-title reveal">Track your<br><em>wellbeing.</em></h2>
+  <div class="mood-layout">
+    <div class="mood-check reveal">
+      <h3>How are you feeling?</h3>
+      <p>Log your mood to build your personal wellness picture.</p>
+      <div class="mood-emojis">
+        <button class="m-btn" data-l="Great" onclick="selectMood(this,'Great')">😊</button>
+        <button class="m-btn" data-l="Okay" onclick="selectMood(this,'Okay')">😐</button>
+        <button class="m-btn" data-l="Low" onclick="selectMood(this,'Low')">😔</button>
+        <button class="m-btn" data-l="Anxious" onclick="selectMood(this,'Anxious')">😰</button>
+        <button class="m-btn" data-l="Angry" onclick="selectMood(this,'Angry')">😤</button>
+        <button class="m-btn" data-l="Numb" onclick="selectMood(this,'Numb')">😶</button>
+      </div>
+      <div class="mood-sliders">
+        <div class="slider-row"><label>Sleep Quality <span id="sleepVal">6 hrs</span></label><input type="range" min="1" max="10" value="6" oninput="document.getElementById('sleepVal').textContent=this.value+' hrs'"></div>
+        <div class="slider-row"><label>Energy Level <span id="energyVal">5/10</span></label><input type="range" min="1" max="10" value="5" oninput="document.getElementById('energyVal').textContent=this.value+'/10'"></div>
+        <div class="slider-row"><label>Stress Level <span id="stressVal">4/10</span></label><input type="range" min="1" max="10" value="4" oninput="document.getElementById('stressVal').textContent=this.value+'/10'"></div>
+      </div>
+      <button class="btn-primary" style="margin-top:1.8rem;width:100%;justify-content:center;" onclick="logMood()">Log Today's Entry</button>
+      <div id="moodMsg"></div>
+    </div>
+    <div class="chart-wrap reveal">
+      <h3>Your 7-Day Wellness Trend</h3>
+      <canvas id="moodChart" height="220"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- TIPS -->
+<section class="page-section" id="tips">
+  <div class="reveal">
+    <div class="s-label">Self-Care</div>
+    <h2 class="s-title">Daily habits for a<br><em>healthier mind.</em></h2>
+  </div>
+  <div class="tips-grid">
+    <div class="tip-card reveal"><span class="tip-num">01 ·</span><h4>Move Your Body</h4><p>Just 20–30 minutes of daily movement releases endorphins. A walk counts. Consistency beats intensity every time.</p></div>
+    <div class="tip-card reveal"><span class="tip-num">02 ·</span><h4>Protect Your Sleep</h4><p>7–9 hours of quality sleep is non-negotiable. Create a wind-down routine and keep a consistent schedule.</p></div>
+    <div class="tip-card reveal"><span class="tip-num">03 ·</span><h4>Mindful Breathing</h4><p>The 4-7-8 technique (inhale 4s, hold 7s, exhale 8s) activates your parasympathetic nervous system in minutes.</p></div>
+    <div class="tip-card reveal"><span class="tip-num">04 ·</span><h4>Limit Doom-Scrolling</h4><p>Set a 30-minute daily social media limit. Replace one scroll session with something that fills your cup.</p></div>
+    <div class="tip-card reveal"><span class="tip-num">05 ·</span><h4>Connect Authentically</h4><p>Deep conversations are more restorative than many shallow ones. Quality always matters more than quantity.</p></div>
+    <div class="tip-card reveal"><span class="tip-num">06 ·</span><h4>Journal Your Thoughts</h4><p>Writing externalizes your thoughts, reducing their weight. Even 5 minutes a day creates meaningful clarity.</p></div>
+  </div>
+</section>
+
+<!-- RESOURCES -->
+<section class="page-section" id="resources">
+  <div class="reveal">
+    <div class="s-label">Help & Support</div>
+    <h2 class="s-title">You're not<br><em>alone.</em></h2>
+  </div>
+  <div class="emergency-banner reveal">
+    <div><strong>🆘 In Crisis? Get Immediate Help</strong><span>Free, confidential support available 24/7 — no judgment, no questions asked.</span></div>
+    <div class="emrg-num">iCall: 9152987821</div>
+  </div>
+  <div class="resources-grid">
+    <div class="res-card reveal"><span class="res-type">Crisis Helpline</span><h4>iCall</h4><p>Free, confidential counselling by trained professionals. Mon–Sat, 8am–10pm IST.</p><div class="res-contact">📞 9152987821</div></div>
+    <div class="res-card reveal"><span class="res-type">24/7 Helpline</span><h4>Vandrevala Foundation</h4><p>Round-the-clock support in Hindi and English.</p><div class="res-contact">📞 1860-2662-345</div></div>
+    <div class="res-card reveal"><span class="res-type">Suicide Prevention</span><h4>AASRA</h4><p>India's leading suicide prevention helpline, available 24 hours every day.</p><div class="res-contact">📞 9820466627</div></div>
+    <div class="res-card reveal"><span class="res-type">Youth Support</span><h4>YourDOST</h4><p>Online counselling for students and young professionals.</p><div class="res-contact">🌐 yourdost.com</div></div>
+    <div class="res-card reveal"><span class="res-type">Women's Support</span><h4>Snehi</h4><p>Emotional support and counselling for women experiencing mental health challenges.</p><div class="res-contact">📞 044-24640050</div></div>
+    <div class="res-card reveal"><span class="res-type">LGBTQ+ Support</span><h4>Arpita Suicide Hotline</h4><p>Safe, inclusive support for LGBTQ+ individuals facing mental health crises.</p><div class="res-contact">📞 080-23655557</div></div>
+  </div>
+  <div style="margin-top:5rem;" class="reveal">
+    <div class="s-label">Access Tiers</div>
+    <h2 class="s-title">Support that fits<br>your <em>budget.</em></h2>
+  </div>
+  <div class="tiers-grid reveal">
+    <div class="tier-card">
+      <div class="tier-name">Free</div>
+      <div class="tier-price">₹0<sub>/mo</sub></div>
+      <div class="tier-period">Always free, no credit card</div>
+      <ul class="tier-features"><li>AI Companion (Mira)</li><li>Mood & Wellness Tracker</li><li>Cognitive Reframing Tool</li><li>Guided Journal</li><li>Crisis Helpline Directory</li></ul>
+      <a href="#contact" class="btn-ghost" style="display:flex;justify-content:center;">Get Started</a>
+    </div>
+    <div class="tier-card featured">
+      <div class="tier-name">Group Care</div>
+      <div class="tier-price">₹499<sub>/mo</sub></div>
+      <div class="tier-period">Group sessions of 8–10 people</div>
+      <ul class="tier-features"><li>Everything in Free</li><li>Weekly group therapy sessions</li><li>Smart therapist matching</li><li>Session recordings & notes</li><li>Guided meditation library</li></ul>
+      <a href="#contact" class="btn-primary" style="display:flex;justify-content:center;">Start Free Trial</a>
+    </div>
+    <div class="tier-card">
+      <div class="tier-name">1-on-1 Care</div>
+      <div class="tier-price">₹1,299<sub>/mo</sub></div>
+      <div class="tier-period">Private video sessions</div>
+      <ul class="tier-features"><li>Everything in Group Care</li><li>2× private video sessions</li><li>Personalized care plan</li><li>Between-session messaging</li><li>Sliding scale available</li></ul>
+      <a href="#contact" class="btn-ghost" style="display:flex;justify-content:center;">Book Consultation</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="page-section" id="contact">
+  <div class="contact-grid">
+    <div class="contact-left reveal">
+      <div class="s-label">Get In Touch</div>
+      <h2 class="s-title">Ready to take<br>the <em>first step?</em></h2>
+      <p>Whether you need support, want to join as a therapist, or are an institution looking for a wellness solution — we're here. No judgment. No pressure.</p>
+      <div class="contact-detail"><div class="cd-icon">📧</div><div class="cd-body"><strong>Email</strong>hello@mindspace.in</div></div>
+      <div class="contact-detail"><div class="cd-icon">📞</div><div class="cd-body"><strong>Call / WhatsApp</strong>+91 98765 43210</div></div>
+      <div class="contact-detail"><div class="cd-icon">🔒</div><div class="cd-body"><strong>Anonymous Form</strong>No name required. We'll respond to any email you provide.</div></div>
+    </div>
+    <div class="reveal">
+      <div class="form-group"><label>Your Name (optional)</label><input type="text" id="fname" placeholder="Anonymous is fine"></div>
+      <div class="form-group"><label>Email (optional)</label><input type="email" id="femail" placeholder="For us to respond"></div>
+      <div class="form-group"><label>I'm reaching out as a…</label>
+        <select id="ftype"><option value="">Select one</option><option>Someone seeking support</option><option>University / Organisation</option><option>Therapist wanting to join</option><option>Press / Media</option><option>Just curious</option></select>
+      </div>
+      <div class="form-group"><label>Message</label><textarea id="fmsg" placeholder="Share what's on your mind, or what you're looking for…"></textarea></div>
+      <button class="btn-primary" style="width:100%;justify-content:center;" onclick="submitForm()">Send Message →</button>
+      <div class="form-success" id="formSuccess">✅ Thank you for reaching out. We'll respond within 24 hours. You're brave for taking this step.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <a href="#home" class="logo"><div class="logo-dot"></div>Mind<span>Space</span></a>
+  <div class="footer-links">
+    <a href="#about">About</a><a href="#breathe">Breathe</a><a href="#resources">Resources</a><a href="#journal">Journal</a><a href="#contact">Contact</a>
+  </div>
+  <p>© 2026 MindSpace · Mental health is a right, not a privilege.</p>
+</footer>
+
+<script>
+// REVEAL
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis');});},{threshold:.07});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// CHAT
+const chatResponses={
+  anxious:"I hear you — anxiety can feel really overwhelming. 💚\n\nLet's try something together: breathe in for 4 counts, hold for 4, and out for 6. Repeat 3 times.\n\nYou're safe right now. Would you like to talk about what's triggering it?",
+  sleep:"Poor sleep and mental health are deeply connected. 🌙\n\nA few things that genuinely help: no screens an hour before bed, a consistent sleep time, and writing down tomorrow's tasks so your mind can let go.",
+  overwhelmed:"Feeling overwhelmed means your mind is carrying too much. 💚\n\nWhat's the single biggest thing weighing on you right now? Naming it often takes away some of its power.",
+  lonely:"I'm really glad you're here. Feeling lonely is one of the most common human experiences — it doesn't mean anything is wrong with you. 💚\n\nWould you like to talk about what's been making you feel this way?",
+  talk:"I'm glad you reached out. You don't need a specific problem to talk — sometimes you just need space to be heard. 💚\n\nWhat's been on your mind lately?",
+  default:["That sounds really hard, and your feelings are completely valid. Tell me more — I'm listening. 💚","I'm here with you. It takes courage to reach out. What's been weighing on you most?","You're not alone in this. What would feel most helpful — venting, coping strategies, or connecting with professional help?","Thank you for trusting me with this. Can you tell me more about what you're experiencing?"]
+};
+let msgCount=0;
+function sendMsg(){
+  const inp=document.getElementById('chatInp'),val=inp.value.trim();if(!val)return;
+  addMsg(val,'user');inp.value='';const lower=val.toLowerCase();showTyping();
+  setTimeout(()=>{
+    removeTyping();
+    let r;
+    if(lower.includes('anxi')||lower.includes('nervous')||lower.includes('panic'))r=chatResponses.anxious;
+    else if(lower.includes('sleep')||lower.includes('tired')||lower.includes('insomnia'))r=chatResponses.sleep;
+    else if(lower.includes('overwhelm')||lower.includes('too much')||lower.includes('stress'))r=chatResponses.overwhelmed;
+    else if(lower.includes('lonely')||lower.includes('alone')||lower.includes('isolated'))r=chatResponses.lonely;
+    else if(lower.includes('talk')||lower.includes('listen')||lower.includes('someone'))r=chatResponses.talk;
+    else r=chatResponses.default[msgCount%chatResponses.default.length];
+    msgCount++;addMsg(r,'bot');
+    if(msgCount>=3)setTimeout(()=>addMsg("If you'd like to speak with a real counsellor, helplines are listed in the Resources section below. 🤝",'bot'),900);
+  },1400);
+}
+function sendQuick(btn){document.getElementById('chatInp').value=btn.textContent.replace(/[😰🌙😮‍💨💬💙]/gu,'').trim();sendMsg();}
+function addMsg(t,r){const m=document.getElementById('chatMsgs'),d=document.createElement('div');d.className='msg '+r;d.style.whiteSpace='pre-wrap';d.textContent=t;m.appendChild(d);m.scrollTop=m.scrollHeight;}
+function showTyping(){const m=document.getElementById('chatMsgs'),d=document.createElement('div');d.className='msg typing';d.id='typing';d.innerHTML='<div class="typing-dots"><span></span><span></span><span></span></div>';m.appendChild(d);m.scrollTop=m.scrollHeight;}
+function removeTyping(){const t=document.getElementById('typing');if(t)t.remove();}
+
+// BREATHING
+const techniques={'4-4-4-4':{phases:[{label:'Inhale',dur:4,emoji:'🌿'},{label:'Hold',dur:4,emoji:'🍃'},{label:'Exhale',dur:4,emoji:'💨'},{label:'Hold',dur:4,emoji:'🍃'}]},'4-7-8':{phases:[{label:'Inhale',dur:4,emoji:'🌿'},{label:'Hold',dur:7,emoji:'🍃'},{label:'Exhale',dur:8,emoji:'💨'}]},'5-5':{phases:[{label:'Inhale',dur:5,emoji:'🌿'},{label:'Exhale',dur:5,emoji:'💨'}]},'3-6':{phases:[{label:'Inhale',dur:3,emoji:'🌿'},{label:'Exhale',dur:6,emoji:'💨'}]}};
+const circ=2*Math.PI*115;
+let bRun=false,bTimer=null,bPi=0,bSec=0,bCyc=0;
+function getPhases(){return techniques[document.getElementById('breatheTech').value].phases;}
+function setProg(r){document.getElementById('brProgress').style.strokeDashoffset=circ*(1-r);}
+function updateBUI(p,sl,tot){
+  document.getElementById('breathePhase').textContent=p.label;
+  document.getElementById('breatheCount').textContent=sl;
+  document.getElementById('breatheEmoji').textContent=p.emoji;
+  const c=document.getElementById('breatheCircle');c.classList.remove('expanding','holding','contracting');
+  if(p.label==='Inhale')c.classList.add('expanding');else if(p.label==='Hold')c.classList.add('holding');else c.classList.add('contracting');
+  setProg(sl/tot);
+}
+function toggleBreath(){bRun?pauseB():startB();}
+function startB(){bRun=true;document.getElementById('breatheToggle').textContent='⏸ Pause';runB();}
+function pauseB(){bRun=false;clearTimeout(bTimer);document.getElementById('breatheToggle').textContent='▶ Resume';}
+function resetBreath(){
+  bRun=false;clearTimeout(bTimer);bPi=0;bSec=0;bCyc=0;
+  document.getElementById('breatheToggle').textContent='▶ Start';
+  document.getElementById('breathePhase').textContent='tap to start';
+  document.getElementById('breatheCount').textContent='—';
+  document.getElementById('breatheEmoji').textContent='🌿';
+  document.getElementById('breatheCycles').textContent='Complete 5 cycles for maximum benefit';
+  document.getElementById('breatheCircle').classList.remove('expanding','holding','contracting');setProg(0);
+}
+function runB(){
+  if(!bRun)return;const phases=getPhases(),p=phases[bPi],sl=p.dur-bSec;
+  updateBUI(p,sl,p.dur);bSec++;
+  if(bSec>=p.dur){bSec=0;bPi++;if(bPi>=phases.length){bPi=0;bCyc++;document.getElementById('breatheCycles').textContent=`Cycles completed: ${bCyc} 🌿`;}}
+  bTimer=setTimeout(runB,1000);
+}
+
+// REFRAME
+const distortions=[
+  {keys:['always','never','every','all','none','nobody','everyone'],type:'All-or-Nothing Thinking',explain:'You\'re thinking in absolutes — "always", "never", "everyone". Real situations are rarely this black and white. This pattern ignores evidence of nuance and progress.',reframe:'I sometimes struggle, and that\'s human. I\'ve also handled challenges well before. Progress, not perfection, is what matters.'},
+  {keys:['nobody likes','no one cares','they all hate','worthless','useless'],type:'Mind Reading & Labelling',explain:'You\'re assuming you know what others think, or applying a permanent negative label to yourself. One moment doesn\'t define who you are.',reframe:'I can\'t know for certain what others think. One difficult moment doesn\'t erase my worth or all the good I\'ve done.'},
+  {keys:['never be good enough','not good enough','failure','loser','stupid'],type:'Overgeneralization',explain:'You\'re taking one negative experience and projecting it as a permanent pattern — drawing a sweeping conclusion from very limited evidence.',reframe:'I\'m finding this challenging right now, but difficulty in one area doesn\'t mean I\'m failing overall. I have strengths, and I\'m learning.'},
+  {keys:['everything','ruin','disaster','worst','terrible','horrible'],type:'Catastrophizing',explain:'You\'re imagining the worst possible outcome and treating it as inevitable. This amplifies anxiety and makes problems seem much larger than they are.',reframe:'This is difficult, but the worst case rarely happens. I\'ve gotten through hard things before, and I can handle this too.'},
+];
+function reframeThought(){
+  const t=document.getElementById('thoughtInput').value.toLowerCase();if(!t.trim())return;
+  let m=distortions[distortions.length-1];
+  for(const d of distortions){if(d.keys.some(k=>t.includes(k))){m=d;break;}}
+  document.getElementById('distortionBadge').textContent='⚠ '+m.type+' detected';
+  document.getElementById('reframeExplain').textContent=m.explain;
+  document.getElementById('reframeNew').textContent='"'+m.reframe+'"';
+  const res=document.getElementById('reframeResult');res.style.display='block';res.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+// JOURNAL
+let curTag='',jEntries=[];try{jEntries=JSON.parse(localStorage.getItem('ms_j')||'[]');}catch(e){}
+function switchJTab(btn,panel){
+  document.querySelectorAll('.j-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.journal-panel').forEach(p=>{p.classList.remove('active');p.style.display='none';});
+  btn.classList.add('active');const el=document.getElementById('jp-'+panel);el.style.display='block';el.classList.add('active');
+  if(panel==='entries')renderEntries();
+}
+function tagMood(btn,tag){document.querySelectorAll('#writeMoodTags .qp').forEach(b=>b.style.background='');btn.style.background='rgba(42,122,75,0.2)';curTag=tag;}
+function updateCharCount(){const w=document.getElementById('journalText').value.trim().split(/\s+/).filter(x=>x).length;document.getElementById('charCount').textContent=w+(w===1?' word':' words');}
+function usePrompt(el){
+  const text=el.textContent.trim().replace(/^[💭🌱🔮💪🌊🏡]\s*/,'');
+  document.getElementById('journalText').value=text+'\n\n';
+  document.querySelectorAll('.j-tab').forEach((t,i)=>{if(i===0)t.classList.add('active');else t.classList.remove('active');});
+  document.querySelectorAll('.journal-panel').forEach((p,i)=>{if(i===0){p.style.display='block';p.classList.add('active');}else{p.style.display='none';p.classList.remove('active');}});
+  document.getElementById('journalText').focus();updateCharCount();
+}
+function saveJournalEntry(){
+  const text=document.getElementById('journalText').value.trim();if(!text){alert('Write something first!');return;}
+  jEntries.unshift({text,mood:curTag,date:new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}),time:new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})});
+  try{localStorage.setItem('ms_j',JSON.stringify(jEntries.slice(0,50)));}catch(e){}
+  document.getElementById('journalText').value='';curTag='';
+  document.querySelectorAll('#writeMoodTags .qp').forEach(b=>b.style.background='');
+  updateCharCount();alert('Entry saved! 🌿');
+}
+function renderEntries(){
+  const list=document.getElementById('entriesList'),hint=document.getElementById('entriesHint');
+  if(!jEntries.length){hint.style.display='block';list.innerHTML='';return;}
+  hint.style.display='none';
+  list.innerHTML=jEntries.map(e=>`<div class="j-entry"><div class="j-entry-meta"><span>${e.date} · ${e.time}</span>${e.mood?`<span class="j-mood-tag">${e.mood}</span>`:''}</div><div class="j-entry-text">${e.text}</div></div>`).join('');
+}
+document.querySelectorAll('.journal-panel').forEach((p,i)=>{if(i!==0)p.style.display='none';});
+
+// MOOD
+function selectMood(btn){document.querySelectorAll('.m-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+function logMood(){
+  const a=document.querySelector('.m-btn.active'),mood=a?a.getAttribute('data-l'):null;
+  const msgs={'Great':'You\'re doing well — that matters. Entry logged. 🌿','Okay':'Neutral days are completely normal. Entry saved. 💚','Low':'It\'s okay to not be okay. Your feelings are valid. Consider reaching out to someone you trust.','Anxious':'Anxiety is tough. Try the breathing exercise above. Entry saved.','Angry':'Anger is valid. Journaling or movement can help. Entry logged. 💪','Numb':'Numbness can signal you need rest or support. Be gentle with yourself today.'};
+  const el=document.getElementById('moodMsg');el.textContent=mood?msgs[mood]:'Entry logged. Thank you for checking in with yourself. 💚';el.style.display='block';
+}
+
+// CHART
+window.addEventListener('load',()=>{
+  new Chart(document.getElementById('moodChart').getContext('2d'),{type:'line',data:{labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],datasets:[
+    {label:'Mood',data:[5,4,6,5,7,8,7],borderColor:'#2A7A4B',backgroundColor:'rgba(42,122,75,0.08)',fill:true,tension:0.45,pointBackgroundColor:'#2A7A4B',pointRadius:5,pointBorderColor:'#F2F8F4',pointBorderWidth:2},
+    {label:'Sleep',data:[6,5,7,6,8,7,8],borderColor:'#26A69A',backgroundColor:'rgba(38,166,154,0.06)',fill:true,tension:0.45,pointBackgroundColor:'#26A69A',pointRadius:5,pointBorderColor:'#F2F8F4',pointBorderWidth:2},
+    {label:'Energy',data:[4,3,5,6,7,8,6],borderColor:'#8BC34A',backgroundColor:'rgba(139,195,74,0.06)',fill:true,tension:0.45,pointBackgroundColor:'#8BC34A',pointRadius:5,pointBorderColor:'#F2F8F4',pointBorderWidth:2},
+  ]},options:{responsive:true,plugins:{legend:{labels:{color:'#6B8F77',font:{family:'DM Sans',size:11},boxWidth:10,padding:16}}},scales:{x:{grid:{color:'rgba(42,122,75,0.06)'},ticks:{color:'#6B8F77',font:{family:'DM Sans',size:11}}},y:{grid:{color:'rgba(42,122,75,0.06)'},ticks:{color:'#6B8F77',font:{family:'DM Sans',size:11}},min:0,max:10}}}});
+});
+
+// FORM
+function submitForm(){
+  const msg=document.getElementById('fmsg').value.trim();if(!msg){alert('Please share your message first.');return;}
+  document.getElementById('formSuccess').style.display='block';
+  ['fmsg','fname','femail'].forEach(id=>document.getElementById(id).value='');
+}
+</script>
 </body>
 </html>
